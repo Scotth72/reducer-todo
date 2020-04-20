@@ -1,32 +1,35 @@
-import React, {useState, useReducer} from 'react';
-
-export const initialState = [{
-    task: 'Clean the kitchen',
+export const initialState = [
+  {
+    item: "Learn to use Reducer",
     completed: false,
-    id: 1234325 
-},]
+    id: 1234325,
+  },
+];
 
-export const heathReducer = (state = initialState, action) => {
-    switch(action.type){
-        case 'ADD_TODO':
-           return {
-                ...state,
-                item: '',
-                completed: true,
-                id: Date.now ()
-           };
-        case 'TOGGLE_TODO':
-            return{
-                ...state,
-                completed: false,
-                
-            }
-        case 'CLEAR_TODO':
-            return{
-
-            }       
+export const todoReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case "ADD_TODO":
+      return [
+        ...state,
+        { item: action.payload, completed: false, id: Date.now() },
+      ];
+    case "TOGGLE_TODO":
+      // console.log(state)
+      return [
+        ...state.map((item) => {
+          return (
+            item.id == action.payload ? { ...item, completed: !item.completed } : item
+          )
+        })
+      ];
+    case 'CLEAR_TODO':
+      return [
+        ...state.filter(item =>
+          // console.log('test', item.completed)
+          item.completed == false
+        )
+      ]
     default:
-        return state;        
-
-    }
+      return state;
+  }
 };
